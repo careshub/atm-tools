@@ -48,6 +48,9 @@ class Tools_CPT {
 
 		add_action( 'pre_get_posts', array( $this, 'sortable_columns_orderby' ) );
 
+		//make this visible in main loop
+		add_action('pre_get_posts', array( $this, 'atm_query_post_type' ) );
+
 		// Administration of this CPT
 		// Add a meta box to the data vis tools edit screen
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
@@ -83,14 +86,14 @@ class Tools_CPT {
 	    $args = array(
 	        'labels' => $labels,
 	        'hierarchical' => false,
-	        'description' => 'Used to add tools to the tools page.',
-	        'supports' => array( 'title', 'editor', 'thumbnail' ),
+	        'description' => 'Explore additional data, tools, and resources supported by the Center for Applied Research and Engagement Systems.',
+	        'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'excerpt' ),
 	        'taxonomies' => array( 'category' ),
 	        'public' => true,
 	        'show_ui' => true,
 	        'show_in_menu' => true,
 	        'menu_position' => 49,
-	        'show_in_nav_menus' => false,
+	        'show_in_nav_menus' => true,
 	        'publicly_queryable' => true,
 	        'exclude_from_search' => false,
 	        'has_archive' => true,
@@ -152,7 +155,7 @@ class Tools_CPT {
 	 * @since    1.0.0
 	 */
 	function add_meta_box() {
-		\add_meta_box( 'tools-meta-box', 'Tool Info', array( $this, 'render_meta_box' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( 'tools-meta-box', 'Tool Info', array( $this, 'render_meta_box' ), $this->post_type, 'normal', 'high' );
 	}
 
 	/**
@@ -330,6 +333,13 @@ class Tools_CPT {
 		}
 
 	    return $permalink;
+	}
+
+	function atm_query_post_type($query) {
+		if( $query->is_main_query()
+			&& ( is_category() ) ) {
+				$query->set( 'post_type', array( 'post','atm_tool','atm_issue' ) );
+		}
 	}
 
 }
