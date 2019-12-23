@@ -69,18 +69,18 @@ class Tools_CPT {
 	function register_cpt() {
 
 	    $labels = array(
-	        'name' => _x( 'Tools', 'cares-atm-tools' ),
-	        'singular_name' => _x( 'Tool', 'cares-atm-tools' ),
+	        'name' => _x( 'Maps & Tools', 'cares-atm-tools' ),
+	        'singular_name' => _x( 'Map/Tool', 'cares-atm-tools' ),
 	        'add_new' => _x( 'Add New', 'cares-atm-tools' ),
-	        'add_new_item' => _x( 'Add New Tool', 'cares-atm-tools' ),
-	        'edit_item' => _x( 'Edit Tool', 'cares-atm-tools' ),
-	        'new_item' => _x( 'New Tool', 'cares-atm-tools' ),
-	        'view_item' => _x( 'View Tool', 'cares-atm-tools' ),
+	        'add_new_item' => _x( 'Add New Map/Tool', 'cares-atm-tools' ),
+	        'edit_item' => _x( 'Edit Map/Tool', 'cares-atm-tools' ),
+	        'new_item' => _x( 'New Map/Tool', 'cares-atm-tools' ),
+	        'view_item' => _x( 'View Map/Tool', 'cares-atm-tools' ),
 	        'search_items' => _x( 'Search Tools', 'cares-atm-tools' ),
 	        'not_found' => _x( 'No tools found', 'cares-atm-tools' ),
 	        'not_found_in_trash' => _x( 'No tools found in Trash', 'cares-atm-tools' ),
 	        'parent_item_colon' => _x( 'Parent Tool:', 'cares-atm-tools' ),
-	        'menu_name' => _x( 'Tools', 'cares-atm-tools' ),
+	        'menu_name' => _x( 'Maps & Tools', 'cares-atm-tools' ),
 	    );
 
 	    $args = array(
@@ -88,11 +88,11 @@ class Tools_CPT {
 	        'hierarchical' => false,
 	        'description' => 'Explore additional data, tools, and resources supported by the Center for Applied Research and Engagement Systems.',
 	        'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'excerpt' ),
-	        'taxonomies' => array( 'category' ),
+	        'taxonomies' => array( 'category','post_tag' ),
 	        'public' => true,
 	        'show_ui' => true,
 	        'show_in_menu' => true,
-	        'menu_position' => 49,
+	        'menu_position' => 5,
 	        'show_in_nav_menus' => true,
 	        'publicly_queryable' => true,
 	        'exclude_from_search' => false,
@@ -104,6 +104,7 @@ class Tools_CPT {
 	        // Allow this post type to be exposed via WP JSON REST API
 	        'show_in_rest' => true,
 	         //'map_meta_cap'    => true
+			'menu_icon' => 'dashicons-location-alt',
 
 	    );
 
@@ -128,12 +129,22 @@ class Tools_CPT {
 			'show_in_rest' => true,
 		) );
 
-		// I'm guessing this is a way to pull a tool or two up to the top.
-		register_meta( 'post', 'featured_item', array(
+		// Shows in Map Gallery
+		register_meta( 'post', 'gallery', array(
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
-			'description' => 'Whether this item should be featured or not.',
+			'description' => 'Whether this item shows in Map Gallery.',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
+
+		// Is Map
+		register_meta( 'post', 'map', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Is Map?',
 			'single' => true,
 			'show_in_rest' => true,
 		) );
@@ -155,7 +166,7 @@ class Tools_CPT {
 	 * @since    1.0.0
 	 */
 	function add_meta_box() {
-		add_meta_box( 'tools-meta-box', 'Tool Info', array( $this, 'render_meta_box' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( 'tools-meta-box', 'Map/Tool Info', array( $this, 'render_meta_box' ), $this->post_type, 'normal', 'high' );
 	}
 
 	/**
@@ -166,7 +177,8 @@ class Tools_CPT {
 	function render_meta_box( $post ) {
 		$display_order = get_post_meta( $post->ID, 'display_order', true );
 		$link          = get_post_meta( $post->ID, 'alt_link', true );
-		$featured      = get_post_meta( $post->ID, 'featured_item', true );
+		$gallery      = get_post_meta( $post->ID, 'gallery', true );
+		$is_map      = get_post_meta( $post->ID, 'map', true );
 		// Add a nonce field so we can check for it later.
 		wp_nonce_field( $this->nonce_name, $this->nonce_value );
 		?>
@@ -177,8 +189,12 @@ class Tools_CPT {
 			<em>Input a number for the priority to give to this tool. Use small numbers for important tools, like 1 or 10, and larger numbers for less important tools, like 250 or 800.</em>
 		</p>
 		<p style="margin-top:.2em;">
-			<input type="checkbox" name="featured_item" id="featured_item" <?php checked( $featured ); ?> />
-			<label for="featured_item">Feature this item (somewhere-TBD)</label>
+			<input type="checkbox" name="map" id="map" <?php checked( $is_map ); ?> />
+			<label for="map">Is Map</label>
+		</p>
+		<p style="margin-top:.2em;">
+			<input type="checkbox" name="gallery" id="gallery" <?php checked( $gallery ); ?> />
+			<label for="gallery">Shows in Map Gallery</label>
 		</p>
 		<p style="margin-top:2em;">
 			<label for="alt_link">Link to open tool</label>
@@ -223,8 +239,11 @@ class Tools_CPT {
 			update_post_meta( $post_id, 'alt_link', esc_url_raw( $_POST['alt_link'] ) );
 		}
 
-		$chk = ( isset( $_POST['featured_item'] ) && $_POST['featured_item'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'featured_item', $chk );
+		$chk = ( isset( $_POST['gallery'] ) && $_POST['gallery'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'gallery', $chk );
+		
+		$chk = ( isset( $_POST['map'] ) && $_POST['map'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'map', $chk );
 	}
 
 	/**
@@ -243,7 +262,7 @@ class Tools_CPT {
 		$closing_set = array_slice( $columns, - 1 );
 
 		$insert_set = array(
-			'featured' => __( 'Featured', 'cares-atm-tools' ),
+			'gallery' => __( 'Gallery', 'cares-atm-tools' ),
 			'display_order' => __( 'Display Order', 'cares-atm-tools' )
 			);
 
@@ -262,8 +281,8 @@ class Tools_CPT {
 	 */
 	public function populate_custom_admin_table_columns( $column, $post_id ) {
 			switch( $column ) {
-				case 'featured' :
-					echo ( get_post_meta( $post_id, 'featured_item', true ) ) ? 'Featured' : '';
+				case 'gallery' :
+					echo ( get_post_meta( $post_id, 'gallery', true ) ) ? 'yes' : '';
 					break;
 				case 'display_order' :
 					echo ( $order = get_post_meta( $post_id, 'display_order', true ) ) ? intval( $order ) : '';
@@ -279,7 +298,7 @@ class Tools_CPT {
 	 * @return   array of columns to display
 	 */
 	public function register_sortable_admin_table_columns( $columns ) {
-		$columns['featured'] = 'featured';
+		$columns['gallery'] = 'gallery';
 		$columns['display_order'] = 'display_order';
 		return $columns;
 	}
@@ -299,8 +318,8 @@ class Tools_CPT {
 			$orderby = $query->get( 'orderby');
 
 			switch ( $orderby ) {
-				case 'featured':
-					$query->set( 'meta_key','featured_item' );
+				case 'gallery':
+					$query->set( 'meta_key','gallery' );
 					$query->set( 'orderby','meta_value' );
 					break;
 				case 'display_order':
