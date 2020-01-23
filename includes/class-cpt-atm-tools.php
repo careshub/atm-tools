@@ -129,12 +129,22 @@ class Tools_CPT {
 			'show_in_rest' => true,
 		) );
 
+		// Shows in Slider
+		register_meta( 'post', 'slider', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Whether this item shows in Front Page Slider.',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
+
 		// Shows in Map Gallery
 		register_meta( 'post', 'gallery', array(
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
-			'description' => 'Whether this item shows in Map Gallery.',
+			'description' => 'Whether this item shows in Gallery.',
 			'single' => true,
 			'show_in_rest' => true,
 		) );
@@ -178,6 +188,7 @@ class Tools_CPT {
 		$display_order = get_post_meta( $post->ID, 'display_order', true );
 		$link          = get_post_meta( $post->ID, 'alt_link', true );
 		$gallery      = get_post_meta( $post->ID, 'gallery', true );
+		$slider      = get_post_meta( $post->ID, 'slider', true );
 		$is_map      = get_post_meta( $post->ID, 'map', true );
 		// Add a nonce field so we can check for it later.
 		wp_nonce_field( $this->nonce_name, $this->nonce_value );
@@ -193,8 +204,12 @@ class Tools_CPT {
 			<label for="map">Is Map</label>
 		</p>
 		<p style="margin-top:.2em;">
+			<input type="checkbox" name="slider" id="slider" <?php checked( $slider ); ?> />
+			<label for="slider">Shows in Front Page Slider</label>
+		</p>
+		<p style="margin-top:.2em;">
 			<input type="checkbox" name="gallery" id="gallery" <?php checked( $gallery ); ?> />
-			<label for="gallery">Shows in Map Gallery</label>
+			<label for="gallery">Shows in Gallery</label>
 		</p>
 		<p style="margin-top:2em;">
 			<label for="alt_link">Link to open tool</label>
@@ -242,6 +257,9 @@ class Tools_CPT {
 		$chk = ( isset( $_POST['gallery'] ) && $_POST['gallery'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'gallery', $chk );
 		
+		$chk = ( isset( $_POST['slider'] ) && $_POST['slider'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'slider', $chk );
+		
 		$chk = ( isset( $_POST['map'] ) && $_POST['map'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'map', $chk );
 	}
@@ -263,6 +281,7 @@ class Tools_CPT {
 
 		$insert_set = array(
 			'gallery' => __( 'Gallery', 'cares-atm-tools' ),
+			'slider' => __( 'Slider', 'cares-atm-tools' ),
 			'display_order' => __( 'Display Order', 'cares-atm-tools' )
 			);
 
@@ -299,6 +318,7 @@ class Tools_CPT {
 	 */
 	public function register_sortable_admin_table_columns( $columns ) {
 		$columns['gallery'] = 'gallery';
+		$columns['slider'] = 'slider';
 		$columns['display_order'] = 'display_order';
 		return $columns;
 	}
@@ -320,6 +340,10 @@ class Tools_CPT {
 			switch ( $orderby ) {
 				case 'gallery':
 					$query->set( 'meta_key','gallery' );
+					$query->set( 'orderby','meta_value' );
+					break;
+				case 'slider':
+					$query->set( 'meta_key','slider' );
 					$query->set( 'orderby','meta_value' );
 					break;
 				case 'display_order':

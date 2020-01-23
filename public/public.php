@@ -14,6 +14,11 @@ namespace ATM_Tools\Public_Facing;
 // Load plugin text domain
 add_action( 'init', __NAMESPACE__ . '\\load_plugin_textdomain' );
 
+// CPT image size
+add_image_size( 'slider_thumb', 533, 295, true );
+add_image_size( 'gallery_thumb', 364, 214, true);
+
+
 /**
  * Load the plugin text domain for translation.
  *
