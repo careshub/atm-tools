@@ -303,6 +303,9 @@ class Tools_CPT {
 				case 'gallery' :
 					echo ( get_post_meta( $post_id, 'gallery', true ) ) ? 'yes' : '';
 					break;
+				case 'slider' :
+					echo ( get_post_meta( $post_id, 'slider', true ) ) ? 'yes' : '';
+					break;
 				case 'display_order' :
 					echo ( $order = get_post_meta( $post_id, 'display_order', true ) ) ? intval( $order ) : '';
 					break;
