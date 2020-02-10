@@ -158,6 +158,16 @@ class Tools_CPT {
 			'single' => true,
 			'show_in_rest' => true,
 		) );
+		
+		// Is Map
+		register_meta( 'post', 'story-map', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Is Story Map?',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
 
 		// I'm guessing this will be used to give weight to certain tools, like within an issue.
 		register_meta( 'post', 'display_order', array(
@@ -185,11 +195,12 @@ class Tools_CPT {
 	 * @since    1.0.0
 	 */
 	function render_meta_box( $post ) {
-		$display_order = get_post_meta( $post->ID, 'display_order', true );
-		$link          = get_post_meta( $post->ID, 'alt_link', true );
-		$gallery      = get_post_meta( $post->ID, 'gallery', true );
-		$slider      = get_post_meta( $post->ID, 'slider', true );
-		$is_map      = get_post_meta( $post->ID, 'map', true );
+		$display_order 	= get_post_meta( $post->ID, 'display_order', true );
+		$link         	= get_post_meta( $post->ID, 'alt_link', true );
+		$gallery      	= get_post_meta( $post->ID, 'gallery', true );
+		$slider      	= get_post_meta( $post->ID, 'slider', true );
+		$is_map      	= get_post_meta( $post->ID, 'map', true );
+		$is_story_map	= get_post_meta( $post->ID, 'story-map', true );
 		// Add a nonce field so we can check for it later.
 		wp_nonce_field( $this->nonce_name, $this->nonce_value );
 		?>
@@ -202,6 +213,10 @@ class Tools_CPT {
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="map" id="map" <?php checked( $is_map ); ?> />
 			<label for="map">Is Map</label>
+		</p>
+		<p style="margin-top:.2em;">
+			<input type="checkbox" name="story-map" id="story-map" <?php checked( $is_story_map ); ?> />
+			<label for="story-map">Is Story Map</label>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="slider" id="slider" <?php checked( $slider ); ?> />
@@ -262,6 +277,9 @@ class Tools_CPT {
 		
 		$chk = ( isset( $_POST['map'] ) && $_POST['map'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'map', $chk );
+		
+		$chk = ( isset( $_POST['story-map'] ) && $_POST['story-map'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'story-map', $chk );
 	}
 
 	/**
