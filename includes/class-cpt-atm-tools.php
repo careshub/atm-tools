@@ -159,12 +159,22 @@ class Tools_CPT {
 			'show_in_rest' => true,
 		) );
 		
-		// Is Map
+		// Is Story Map
 		register_meta( 'post', 'story-map', array(
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
 			'description' => 'Is Story Map?',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
+		
+		// Is Tool
+		register_meta( 'post', 'story-map', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Is Tool?',
 			'single' => true,
 			'show_in_rest' => true,
 		) );
@@ -201,6 +211,7 @@ class Tools_CPT {
 		$slider      	= get_post_meta( $post->ID, 'slider', true );
 		$is_map      	= get_post_meta( $post->ID, 'map', true );
 		$is_story_map	= get_post_meta( $post->ID, 'story-map', true );
+		$is_tool		= get_post_meta( $post->ID, 'tool', true );
 		// Add a nonce field so we can check for it later.
 		wp_nonce_field( $this->nonce_name, $this->nonce_value );
 		?>
@@ -217,6 +228,10 @@ class Tools_CPT {
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="story-map" id="story-map" <?php checked( $is_story_map ); ?> />
 			<label for="story-map">Is Story Map</label>
+		</p>
+		<p style="margin-top:.2em;">
+			<input type="checkbox" name="tool" id="tool" <?php checked( $is_tool ); ?> />
+			<label for="tool">Is Tool</label>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="slider" id="slider" <?php checked( $slider ); ?> />
@@ -280,6 +295,9 @@ class Tools_CPT {
 		
 		$chk = ( isset( $_POST['story-map'] ) && $_POST['story-map'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'story-map', $chk );
+		
+		$chk = ( isset( $_POST['tool'] ) && $_POST['tool'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'tool', $chk );
 	}
 
 	/**
