@@ -21,8 +21,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+
 /*----------------------------------------------------------------------------*
- * Public-Facing Functionality
+ * Public-Facing Functionality -1
  *----------------------------------------------------------------------------*/
 
 $basepath = plugin_dir_path( __FILE__ );
