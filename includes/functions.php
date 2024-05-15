@@ -2,7 +2,7 @@
 /**
  * All Things Missouri Tools CPT
  *
- * @package   ATM_Tools_CPT
+ * @package   ATMO_Tools_CPT
  * @author    dcavins
  * @license   GPL-2.0+
  * @link      https://engagementnetwork.org
