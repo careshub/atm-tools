@@ -149,6 +149,24 @@ class Tools_CPT {
 			'show_in_rest' => true,
 		) );
 
+		// Shows in News Page
+		register_meta( 'post', 'news', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Whether this item shows in News Page.',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
+		register_meta( 'post', 'news_spotlight', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Whether this item is a spotlight news.',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
+
 		// Is Map
 		register_meta( 'post', 'map', array(
 			'sanitize_callback' => 'absint',
@@ -238,6 +256,8 @@ class Tools_CPT {
 		$display_order 			= get_post_meta( $post->ID, 'display_order', true );
 		$link         			= get_post_meta( $post->ID, 'alt_link', true );
 		$gallery      			= get_post_meta( $post->ID, 'gallery', true );
+		$news      				= get_post_meta( $post->ID, 'news', true );
+		$news_spotlight			= get_post_meta( $post->ID, 'news_spotlight', true );
 		$slider      			= get_post_meta( $post->ID, 'slider', true );
 		$is_map      			= get_post_meta( $post->ID, 'map', true );
 		$is_news_data     		= get_post_meta( $post->ID, 'news-data', true );
@@ -281,6 +301,15 @@ class Tools_CPT {
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="gallery" id="gallery" <?php checked( $gallery ); ?> />
 			<label for="gallery">Shows in Gallery</label>
+		</p>
+		<p style="margin-top:.2em;">
+			<input type="checkbox" name="news" id="news" <?php checked( $news ); ?> />
+			<label for="news">Shows in News Page</label> 
+			&mdash; 
+			<span style="margin-left: 0 .2em;">
+				<label for="news_spotlight">Spotlight News: </label> 
+				<input type="checkbox" name="news_spotlight" id="news_spotlight" <?php checked( $news_spotlight ); ?>>
+			</span>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="external-asset" id="external-asset" <?php checked( $is_external_asset ); ?> />
@@ -331,7 +360,13 @@ class Tools_CPT {
 
 		$chk = ( isset( $_POST['gallery'] ) && $_POST['gallery'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'gallery', $chk );
-		
+
+		$chk = ( isset( $_POST['news_spotlight'] ) && $_POST['news_spotlight'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'news_spotlight', $chk );
+
+		$chk = ( isset( $_POST['news'] ) && $_POST['news'] ) ? '1' : $chk;		// set to 1 if spotlight is already set to true
+		update_post_meta( $post_id, 'news', $chk );		
+
 		$chk = ( isset( $_POST['slider'] ) && $_POST['slider'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'slider', $chk );
 		
@@ -371,6 +406,7 @@ class Tools_CPT {
 
 		$insert_set = array(
 			'gallery' => __( 'Gallery', 'cares-atm-tools' ),
+			'news' => __( 'News', 'cares-atm-tools' ),
 			'slider' => __( 'Slider', 'cares-atm-tools' ),
 			'display_order' => __( 'Display Order', 'cares-atm-tools' )
 			);
@@ -393,6 +429,9 @@ class Tools_CPT {
 				case 'gallery' :
 					echo ( get_post_meta( $post_id, 'gallery', true ) ) ? 'yes' : '';
 					break;
+				case 'news' :
+					echo ( get_post_meta( $post_id, 'news', true ) ) ? 'yes' : '';
+					break;					
 				case 'slider' :
 					echo ( get_post_meta( $post_id, 'slider', true ) ) ? 'yes' : '';
 					break;
@@ -411,6 +450,7 @@ class Tools_CPT {
 	 */
 	public function register_sortable_admin_table_columns( $columns ) {
 		$columns['gallery'] = 'gallery';
+		$columns['news'] = 'news';
 		$columns['slider'] = 'slider';
 		$columns['display_order'] = 'display_order';
 		return $columns;
@@ -435,6 +475,10 @@ class Tools_CPT {
 					$query->set( 'meta_key','gallery' );
 					$query->set( 'orderby','meta_value' );
 					break;
+				case 'news':
+					$query->set( 'meta_key','news' );
+					$query->set( 'orderby','meta_value' );
+					break;					
 				case 'slider':
 					$query->set( 'meta_key','slider' );
 					$query->set( 'orderby','meta_value' );
