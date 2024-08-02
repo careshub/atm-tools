@@ -302,13 +302,13 @@ class Tools_CPT {
 			<input type="checkbox" name="gallery" id="gallery" <?php checked( $gallery ); ?> />
 			<label for="gallery">Shows in Gallery</label>
 		</p>
-		<p style="margin-top:.2em;">
+		<p style="margin-top:.2em; padding-left: 1.8rem; text-indent: -1.8rem;">
 			<input type="checkbox" name="news" id="news" <?php checked( $news ); ?> />
 			<label for="news">Shows in News Page</label> 
-			&mdash; 
-			<span style="margin-left: 0 .2em;">
-				<label for="news_spotlight">Spotlight News: </label> 
+			<span style="white-space:nowrap;">
+				<span style="font-weight: bold;">&rarr;</span>
 				<input type="checkbox" name="news_spotlight" id="news_spotlight" <?php checked( $news_spotlight ); ?>>
+				<label for="news_spotlight">Spotlight news</label> 				
 			</span>
 		</p>
 		<p style="margin-top:.2em;">
