@@ -167,6 +167,7 @@ class Tools_CPT {
 			'show_in_rest' => true,
 		) );
 
+		/*
 		// Is Map
 		register_meta( 'post', 'map', array(
 			'sanitize_callback' => 'absint',
@@ -196,16 +197,6 @@ class Tools_CPT {
 			'single' => true,
 			'show_in_rest' => true,
 		) );
-		// Is News Data
-		register_meta( 'post', 'news-data', array(
-			'sanitize_callback' => 'absint',
-			// 'auth_callback' => '',
-			'type' => 'integer',
-			'description' => 'Is News Data?',
-			'single' => true,
-			'show_in_rest' => true,
-		) );
-
 
 		// Is Report
 		register_meta( 'post', 'report', array(
@@ -216,6 +207,18 @@ class Tools_CPT {
 			'single' => true,
 			'show_in_rest' => true,
 		) );
+		*/
+		
+		// Shows in Spotlight section (frmly Is News Data)
+		register_meta( 'post', 'spotlight', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Shows in Spotlight?',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
+
 
 		// I'm guessing this will be used to give weight to certain tools, like within an issue.
 		register_meta( 'post', 'display_order', array(
@@ -259,12 +262,12 @@ class Tools_CPT {
 		$news      				= get_post_meta( $post->ID, 'news', true );
 		$news_spotlight			= get_post_meta( $post->ID, 'news_spotlight', true );
 		$slider      			= get_post_meta( $post->ID, 'slider', true );
-		$is_map      			= get_post_meta( $post->ID, 'map', true );
-		$is_news_data     		= get_post_meta( $post->ID, 'news-data', true );
-		$is_story_map			= get_post_meta( $post->ID, 'story-map', true );
-		$is_tool				= get_post_meta( $post->ID, 'tool', true );
+		//$is_map      			= get_post_meta( $post->ID, 'map', true );
+		$spotlight	     		= get_post_meta( $post->ID, 'spotlight', true );
+		//$is_story_map			= get_post_meta( $post->ID, 'story-map', true );
+		//$is_tool				= get_post_meta( $post->ID, 'tool', true );
 		$is_external_asset		= get_post_meta( $post->ID, 'external-asset', true );
-		$is_report				= get_post_meta( $post->ID, 'report', true );
+		//$is_report				= get_post_meta( $post->ID, 'report', true );
 		// Add a nonce field so we can check for it later.
 		wp_nonce_field( $this->nonce_name, $this->nonce_value );
 		?>
@@ -274,6 +277,7 @@ class Tools_CPT {
 			<input type="text" name="display_order" id="display_order" value="<?php echo absint( $display_order ); ?>" style="width:100%"/>
 			<em>Input a number for the priority to give to this tool. Use small numbers for important tools, like 1 or 10, and larger numbers for less important tools, like 250 or 800.</em>
 		</p>
+		<!--
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="map" id="map" <?php checked( $is_map ); ?> />
 			<label for="map">Is Map</label>
@@ -287,16 +291,17 @@ class Tools_CPT {
 			<label for="tool">Is Tool</label>
 		</p>
 		<p style="margin-top:.2em;">
-			<input type="checkbox" name="news-data" id="news-data" <?php checked( $is_news_data ); ?> />
-			<label for="news-data">Is News Data</label>
-		</p>
-		<p style="margin-top:.2em;">
 			<input type="checkbox" name="report" id="report" <?php checked( $is_report ); ?> />
 			<label for="report">Is Report</label>
 		</p>
+		-->
+		<p style="margin-top:.2em;">
+			<input type="checkbox" name="spotlight" id="spotlight" <?php checked( $spotlight ); ?> />
+			<label for="spotlight">Shows in Spotlight Section</label>
+		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="slider" id="slider" <?php checked( $slider ); ?> />
-			<label for="slider">Shows in Front Page Slider</label>
+			<label for="slider">Shows on Front Page</label>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="gallery" id="gallery" <?php checked( $gallery ); ?> />
@@ -305,11 +310,6 @@ class Tools_CPT {
 		<p style="margin-top:.2em; padding-left: 1.8rem; text-indent: -1.8rem;">
 			<input type="checkbox" name="news" id="news" <?php checked( $news ); ?> />
 			<label for="news">Shows in News Page</label> 
-			<span style="white-space:nowrap;">
-				<span style="font-weight: bold;">&rarr;</span>
-				<input type="checkbox" name="news_spotlight" id="news_spotlight" <?php checked( $news_spotlight ); ?>>
-				<label for="news_spotlight">Spotlight news</label> 				
-			</span>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="external-asset" id="external-asset" <?php checked( $is_external_asset ); ?> />
@@ -370,6 +370,7 @@ class Tools_CPT {
 		$chk = ( isset( $_POST['slider'] ) && $_POST['slider'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'slider', $chk );
 		
+		/*
 		$chk = ( isset( $_POST['map'] ) && $_POST['map'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'map', $chk );
 		
@@ -379,14 +380,14 @@ class Tools_CPT {
 		$chk = ( isset( $_POST['tool'] ) && $_POST['tool'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'tool', $chk );
 
-		$chk = ( isset( $_POST['news-data'] ) && $_POST['news-data'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'news-data', $chk );
+		$chk = ( isset( $_POST['report'] ) && $_POST['report'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'report', $chk );
+		*/
+		$chk = ( isset( $_POST['spotlight'] ) && $_POST['spotlight'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'spotlight', $chk );
 
 		$chk = ( isset( $_POST['external-asset'] ) && $_POST['external-asset'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'external-asset', $chk );
-
-		$chk = ( isset( $_POST['report'] ) && $_POST['report'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'report', $chk );
 	}
 
 	/**
@@ -407,7 +408,7 @@ class Tools_CPT {
 		$insert_set = array(
 			'gallery' => __( 'Gallery', 'cares-atm-tools' ),
 			'news' => __( 'News', 'cares-atm-tools' ),
-			'slider' => __( 'Slider', 'cares-atm-tools' ),
+			'slider' => __( 'Front Page', 'cares-atm-tools' ),
 			'display_order' => __( 'Display Order', 'cares-atm-tools' )
 			);
 
