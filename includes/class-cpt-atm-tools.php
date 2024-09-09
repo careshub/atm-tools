@@ -69,24 +69,24 @@ class Tools_CPT {
 	function register_cpt() {
 
 	    $labels = array(
-	        'name' => _x( 'Maps, Tools, Reports & News Data', 'cares-atm-tools' ),
-	        'singular_name' => _x( 'Map/Tool/Report/NewsData', 'cares-atm-tools' ),
+	        'name' => _x( 'Resource & News Items', 'cares-atm-tools' ),
+	        'singular_name' => _x( 'Resource/News Item', 'cares-atm-tools' ),
 	        'add_new' => _x( 'Add New', 'cares-atm-tools' ),
-	        'add_new_item' => _x( 'Add New Map/Tool/Report/NewsData', 'cares-atm-tools' ),
-	        'edit_item' => _x( 'Edit Map/Tool/Report/NewsData', 'cares-atm-tools' ),
-	        'new_item' => _x( 'New Map/Tool/Report/NewsData', 'cares-atm-tools' ),
-	        'view_item' => _x( 'View Map/Tool/Report/NewsData', 'cares-atm-tools' ),
-	        'search_items' => _x( 'Search Tools', 'cares-atm-tools' ),
-	        'not_found' => _x( 'No tools found', 'cares-atm-tools' ),
-	        'not_found_in_trash' => _x( 'No tools found in Trash', 'cares-atm-tools' ),
-	        'parent_item_colon' => _x( 'Parent Tool:', 'cares-atm-tools' ),
-	        'menu_name' => _x( 'Maps, Tools, Reports & News Data', 'cares-atm-tools' ),
+	        'add_new_item' => _x( 'Add New Resource/News Item', 'cares-atm-tools' ),
+	        'edit_item' => _x( 'Edit Resource/News Item', 'cares-atm-tools' ),
+	        'new_item' => _x( 'New Resource/News Item', 'cares-atm-tools' ),
+	        'view_item' => _x( 'View Resource/News Item', 'cares-atm-tools' ),
+	        'search_items' => _x( 'Search Resources', 'cares-atm-tools' ),
+	        'not_found' => _x( 'No Resources found', 'cares-atm-tools' ),
+	        'not_found_in_trash' => _x( 'No Resources found in Trash', 'cares-atm-tools' ),
+	        'parent_item_colon' => _x( 'Parent Resource:', 'cares-atm-tools' ),
+	        'menu_name' => _x( 'Resource & News Items', 'cares-atm-tools' ),
 	    );
 
 	    $args = array(
 	        'labels' => $labels,
 	        'hierarchical' => false,
-	        'description' => 'Explore additional data, tools, and resources.',
+	        'description' => 'Explore additional resources.',
 	        'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'excerpt' ),
 	        'taxonomies' => array( 'category','post_tag' ),
 	        'public' => true,
