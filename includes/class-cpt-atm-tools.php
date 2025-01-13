@@ -158,15 +158,7 @@ class Tools_CPT {
 			'single' => true,
 			'show_in_rest' => true,
 		) );
-		register_meta( 'post', 'news_spotlight', array(
-			'sanitize_callback' => 'absint',
-			// 'auth_callback' => '',
-			'type' => 'integer',
-			'description' => 'Whether this item is a spotlight news.',
-			'single' => true,
-			'show_in_rest' => true,
-		) );
-		
+
 		// Shows in Spotlight section (frmly Is News Data)
 		register_meta( 'post', 'spotlight', array(
 			'sanitize_callback' => 'absint',
@@ -218,7 +210,6 @@ class Tools_CPT {
 		$link         			= get_post_meta( $post->ID, 'alt_link', true );
 		$gallery      			= get_post_meta( $post->ID, 'gallery', true );
 		$news      				= get_post_meta( $post->ID, 'news', true );
-		$news_spotlight			= get_post_meta( $post->ID, 'news_spotlight', true );
 		$slider      			= get_post_meta( $post->ID, 'slider', true );
 		//$is_map      			= get_post_meta( $post->ID, 'map', true );
 		$spotlight	     		= get_post_meta( $post->ID, 'spotlight', true );
@@ -300,9 +291,6 @@ class Tools_CPT {
 
 		$chk = ( isset( $_POST['gallery'] ) && $_POST['gallery'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'gallery', $chk );
-
-		$chk = ( isset( $_POST['news_spotlight'] ) && $_POST['news_spotlight'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'news_spotlight', $chk );
 
 		$chk = ( isset( $_POST['news'] ) && $_POST['news'] ) ? '1' : $chk;		// set to 1 if spotlight is already set to true
 		update_post_meta( $post_id, 'news', $chk );		
