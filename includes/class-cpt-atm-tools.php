@@ -166,48 +166,6 @@ class Tools_CPT {
 			'single' => true,
 			'show_in_rest' => true,
 		) );
-
-		/*
-		// Is Map
-		register_meta( 'post', 'map', array(
-			'sanitize_callback' => 'absint',
-			// 'auth_callback' => '',
-			'type' => 'integer',
-			'description' => 'Is Map?',
-			'single' => true,
-			'show_in_rest' => true,
-		) );
-		
-		// Is Story Map
-		register_meta( 'post', 'story-map', array(
-			'sanitize_callback' => 'absint',
-			// 'auth_callback' => '',
-			'type' => 'integer',
-			'description' => 'Is Story Map?',
-			'single' => true,
-			'show_in_rest' => true,
-		) );
-		
-		// Is Tool
-		register_meta( 'post', 'tool', array(
-			'sanitize_callback' => 'absint',
-			// 'auth_callback' => '',
-			'type' => 'integer',
-			'description' => 'Is Tool?',
-			'single' => true,
-			'show_in_rest' => true,
-		) );
-
-		// Is Report
-		register_meta( 'post', 'report', array(
-			'sanitize_callback' => 'absint',
-			// 'auth_callback' => '',
-			'type' => 'integer',
-			'description' => 'Is Report?',
-			'single' => true,
-			'show_in_rest' => true,
-		) );
-		*/
 		
 		// Shows in Spotlight section (frmly Is News Data)
 		register_meta( 'post', 'spotlight', array(
@@ -277,24 +235,6 @@ class Tools_CPT {
 			<input type="text" name="display_order" id="display_order" value="<?php echo absint( $display_order ); ?>" style="width:100%"/>
 			<em>Input a number for the priority to give to this tool. Use small numbers for important tools, like 1 or 10, and larger numbers for less important tools, like 250 or 800.</em>
 		</p>
-		<!--
-		<p style="margin-top:.2em;">
-			<input type="checkbox" name="map" id="map" <?php checked( $is_map ); ?> />
-			<label for="map">Is Map</label>
-		</p>
-		<p style="margin-top:.2em;">
-			<input type="checkbox" name="story-map" id="story-map" <?php checked( $is_story_map ); ?> />
-			<label for="story-map">Is Story Map</label>
-		</p>
-		<p style="margin-top:.2em;">
-			<input type="checkbox" name="tool" id="tool" <?php checked( $is_tool ); ?> />
-			<label for="tool">Is Tool</label>
-		</p>
-		<p style="margin-top:.2em;">
-			<input type="checkbox" name="report" id="report" <?php checked( $is_report ); ?> />
-			<label for="report">Is Report</label>
-		</p>
-		-->
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="spotlight" id="spotlight" <?php checked( $spotlight ); ?> />
 			<label for="spotlight">Shows in Spotlight Section</label>
@@ -370,19 +310,6 @@ class Tools_CPT {
 		$chk = ( isset( $_POST['slider'] ) && $_POST['slider'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'slider', $chk );
 		
-		/*
-		$chk = ( isset( $_POST['map'] ) && $_POST['map'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'map', $chk );
-		
-		$chk = ( isset( $_POST['story-map'] ) && $_POST['story-map'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'story-map', $chk );
-		
-		$chk = ( isset( $_POST['tool'] ) && $_POST['tool'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'tool', $chk );
-
-		$chk = ( isset( $_POST['report'] ) && $_POST['report'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'report', $chk );
-		*/
 		$chk = ( isset( $_POST['spotlight'] ) && $_POST['spotlight'] ) ? '1' : '0';
 		update_post_meta( $post_id, 'spotlight', $chk );
 
