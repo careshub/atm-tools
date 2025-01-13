@@ -139,12 +139,21 @@ class Tools_CPT {
 			'show_in_rest' => true,
 		) );
 
-		// Shows in Map Gallery
+		// Shows in Resource Gallery
 		register_meta( 'post', 'gallery', array(
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
 			'description' => 'Whether this item shows in Gallery.',
+			'single' => true,
+			'show_in_rest' => true,
+		) );
+
+		register_meta( 'post', 'featured', array(
+			'sanitize_callback' => 'absint',
+			// 'auth_callback' => '',
+			'type' => 'integer',
+			'description' => 'Whether this item shows in the Featured section on Resource Gallery.',
 			'single' => true,
 			'show_in_rest' => true,
 		) );
@@ -197,7 +206,7 @@ class Tools_CPT {
 	 * @since    1.0.0
 	 */
 	function add_meta_box() {
-		add_meta_box( 'tools-meta-box', 'Map/Tool/Report/NewsData Info', array( $this, 'render_meta_box' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( 'tools-meta-box', 'Resource/News Item Info', array( $this, 'render_meta_box' ), $this->post_type, 'normal', 'high' );
 	}
 
 	/**
@@ -209,6 +218,7 @@ class Tools_CPT {
 		$display_order 			= get_post_meta( $post->ID, 'display_order', true );
 		$link         			= get_post_meta( $post->ID, 'alt_link', true );
 		$gallery      			= get_post_meta( $post->ID, 'gallery', true );
+		$featured      			= get_post_meta( $post->ID, 'featured', true );
 		$news      				= get_post_meta( $post->ID, 'news', true );
 		$slider      			= get_post_meta( $post->ID, 'slider', true );
 		//$is_map      			= get_post_meta( $post->ID, 'map', true );
@@ -221,10 +231,10 @@ class Tools_CPT {
 		wp_nonce_field( $this->nonce_name, $this->nonce_value );
 		?>
 
-		<p style="margin-top:2em;">
+		<p>
 			<label for="display_order">Display Order</label>
 			<input type="number" name="display_order" id="display_order" value="<?php echo absint( $display_order ); ?>" style="width:100%"/>
-			<em>Input a number for the priority of this item. Items with the smallest Display Order values are shown on the Front Page.</em>
+			<em>Input a number for the priority of this item. Items are ordered by this meta value and the top items are shown on the Front Page.</em>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="spotlight" id="spotlight" <?php checked( $spotlight ); ?> />
@@ -236,7 +246,10 @@ class Tools_CPT {
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="gallery" id="gallery" <?php checked( $gallery ); ?> />
-			<label for="gallery">Shows in Resource Gallery</label>
+			<label for="gallery">Shows on Resource Gallery Page</label>
+			<span style="padding-left: 5px; white-space:nowrap;">&#8212;
+			<input type="checkbox" name="featured" id="featured" <?php checked( $featured ); ?> />
+			<label for="featured">In Featured section</label></span>			
 		</p>
 		<p style="margin-top:.2em; padding-left: 1.8rem; text-indent: -1.8rem;">
 			<input type="checkbox" name="news" id="news" <?php checked( $news ); ?> />
@@ -246,10 +259,10 @@ class Tools_CPT {
 			<input type="checkbox" name="external-asset" id="external-asset" <?php checked( $is_external_asset ); ?> />
 			<label for="external-asset">Is External Asset</label>
 		</p>
-		<p style="margin-top:2em;">
+		<p>
 			<label for="alt_link">Link to open tool</label>
 			<input type="text" name="alt_link" id="alt_link" value="<?php echo esc_url( $link ); ?>" style="width:100%"/>
-			<em>This value should look like http://datavis...</em>
+			<em>This value should look like https://datavis...</em>
 		</p>
 	<?php
 	}
@@ -289,8 +302,11 @@ class Tools_CPT {
 			update_post_meta( $post_id, 'alt_link', esc_url_raw( $_POST['alt_link'] ) );
 		}
 
-		$chk = ( isset( $_POST['gallery'] ) && $_POST['gallery'] ) ? '1' : '0';
-		update_post_meta( $post_id, 'gallery', $chk );
+		$chkGallery = ( isset( $_POST['gallery'] ) && $_POST['gallery'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'gallery', $chkGallery );
+
+		$chkFeatured = ( isset( $_POST['featured'] ) && $_POST['featured'] && $chkGallery == '1') ? '1' : '0';
+		update_post_meta( $post_id, 'featured', $chkFeatured );
 
 		$chk = ( isset( $_POST['news'] ) && $_POST['news'] ) ? '1' : $chk;		// set to 1 if spotlight is already set to true
 		update_post_meta( $post_id, 'news', $chk );		
