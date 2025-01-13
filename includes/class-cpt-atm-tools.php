@@ -223,12 +223,12 @@ class Tools_CPT {
 
 		<p style="margin-top:2em;">
 			<label for="display_order">Display Order</label>
-			<input type="text" name="display_order" id="display_order" value="<?php echo absint( $display_order ); ?>" style="width:100%"/>
-			<em>Input a number for the priority to give to this tool. Use small numbers for important tools, like 1 or 10, and larger numbers for less important tools, like 250 or 800.</em>
+			<input type="number" name="display_order" id="display_order" value="<?php echo absint( $display_order ); ?>" style="width:100%"/>
+			<em>Input a number for the priority of this item. Items with the smallest Display Order values are shown on the Front Page.</em>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="spotlight" id="spotlight" <?php checked( $spotlight ); ?> />
-			<label for="spotlight">Shows in Spotlight Section</label>
+			<label for="spotlight">Shows in Spotlight section on Front Page</label>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="slider" id="slider" <?php checked( $slider ); ?> />
@@ -236,11 +236,11 @@ class Tools_CPT {
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="gallery" id="gallery" <?php checked( $gallery ); ?> />
-			<label for="gallery">Shows in Gallery</label>
+			<label for="gallery">Shows in Resource Gallery</label>
 		</p>
 		<p style="margin-top:.2em; padding-left: 1.8rem; text-indent: -1.8rem;">
 			<input type="checkbox" name="news" id="news" <?php checked( $news ); ?> />
-			<label for="news">Shows in News Page</label> 
+			<label for="news">Shows on News Page</label> 
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="external-asset" id="external-asset" <?php checked( $is_external_asset ); ?> />
