@@ -238,7 +238,7 @@ class Tools_CPT {
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="spotlight" id="spotlight" <?php checked( $spotlight ); ?> />
-			<label for="spotlight">Shows in Spotlight section on Front Page</label>
+			<label for="spotlight">Shows in Spotlight Section on Front Page</label>
 		</p>
 		<p style="margin-top:.2em;">
 			<input type="checkbox" name="slider" id="slider" <?php checked( $slider ); ?> />
@@ -249,7 +249,7 @@ class Tools_CPT {
 			<label for="gallery">Shows on Resource Gallery Page</label>
 			<span style="padding-left: 5px; white-space:nowrap;">&#8212;
 			<input type="checkbox" name="featured" id="featured" <?php checked( $featured ); ?> />
-			<label for="featured">In Featured section</label></span>			
+			<label for="featured">Is Featured Resource</label></span>
 		</p>
 		<p style="margin-top:.2em; padding-left: 1.8rem; text-indent: -1.8rem;">
 			<input type="checkbox" name="news" id="news" <?php checked( $news ); ?> />
