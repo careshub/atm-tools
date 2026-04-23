@@ -121,6 +121,7 @@ class Tools_CPT {
 	 */
 	public function register_meta() {
 		register_meta( 'post', 'alt_link', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'esc_url_raw',
 			// 'auth_callback' => '',
 			'type' => 'string',
@@ -131,6 +132,7 @@ class Tools_CPT {
 
 		// Shows in Slider
 		register_meta( 'post', 'slider', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
@@ -141,6 +143,7 @@ class Tools_CPT {
 
 		// Shows in Resource Gallery
 		register_meta( 'post', 'gallery', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
@@ -150,6 +153,7 @@ class Tools_CPT {
 		) );
 
 		register_meta( 'post', 'featured', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
@@ -160,6 +164,7 @@ class Tools_CPT {
 
 		// Shows in News Page
 		register_meta( 'post', 'news', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
@@ -170,6 +175,7 @@ class Tools_CPT {
 
 		// Shows in Spotlight section (frmly Is News Data)
 		register_meta( 'post', 'spotlight', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
@@ -181,6 +187,7 @@ class Tools_CPT {
 
 		// I'm guessing this will be used to give weight to certain tools, like within an issue.
 		register_meta( 'post', 'display_order', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
@@ -191,6 +198,7 @@ class Tools_CPT {
 
 		// External asset
 		register_meta( 'post', 'external-asset', array(
+			'object_subtype' => $this->post_type,
 			'sanitize_callback' => 'absint',
 			// 'auth_callback' => '',
 			'type' => 'integer',
